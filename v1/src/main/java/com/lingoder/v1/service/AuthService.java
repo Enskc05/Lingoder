@@ -10,14 +10,16 @@ import com.lingoder.v1.model.PasswordResetCode;
 import com.lingoder.v1.model.User;
 import com.lingoder.v1.repository.PasswordResetCodeRepository;
 import com.lingoder.v1.repository.UserRepository;
-import com.lingoder.v1.security.CustomUserDetails;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class AuthService {
 
 
 
-    public AuthService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoderConfig, UserDetailsService userDetailsService, JwtService token, PasswordResetCodeRepository codeRepository, PasswordResetCodeService passwordResetCodeService, EmailService emailService) {
+    public AuthService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoderConfig, UserDetailsService userDetailsService, JwtService token, PasswordResetCodeRepository codeRepository, PasswordResetCodeService passwordResetCodeService, EmailService emailService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoderConfig = passwordEncoderConfig;
         this.userDetailsService = userDetailsService;
@@ -72,9 +74,13 @@ public class AuthService {
     }
     public SignInResponseDto signIn(SignInRequestDto request){
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-        String jwt = token.generateToken(userDetails);
-        CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
 
+        if (!passwordEncoderConfig.matches(request.getPassword(), userDetails.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid password");
+        }
+
+
+        String jwt = token.generateToken(userDetails);
         return new SignInResponseDto(jwt);
     }
 

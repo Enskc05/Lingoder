@@ -9,14 +9,13 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface WordRepository extends JpaRepository<Word, UUID> {
     List<Word> findByUser(User user);
-
-    @Query("SELECT w FROM Word w WHERE w.user = :user AND w.createdAt >= :date")
-    List<Word> findByUserAndCreatedAtAfter(@Param("user") User user,
-                                           @Param("date") LocalDateTime date);
+    Optional<Word> findById(UUID id);
+    List<Word> findByUserAndCreatedAtAfter(User user, LocalDateTime after);
 
     @Query(value = "SELECT * FROM words WHERE user_id = UUID_TO_BIN(:userId)", nativeQuery = true)
     List<Word> findByUserId(@Param("userId") String userId);

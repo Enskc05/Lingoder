@@ -44,6 +44,19 @@ public class WordService {
                 });
     }
     @Transactional
+    public List<Word> findByUserAndCreatedAtAfter(User user, LocalDateTime after){
+        return wordRepository.findByUserAndCreatedAtAfter(user,after);
+    }
+    @Transactional
+    public List<Word> findByUser(User user){
+        return wordRepository.findByUser(user);
+    }
+    @Transactional
+    public Word findById(UUID id){
+        return wordRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Word not found with id: " + id));
+    }
+    @Transactional
     public WordResponseDto add(WordRequestDto request){
         User user = userService.findByUsername(request.getUsername());
         Topic topic = findOrCreateByName((request.getTopic()));

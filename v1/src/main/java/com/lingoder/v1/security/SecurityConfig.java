@@ -37,6 +37,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.DELETE, "/word/delete/**").hasAnyRole("USER","ADMIN")
                                 .requestMatchers(HttpMethod.GET,"/word").hasAnyRole("USER","ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/statistic").hasAnyRole("USER","ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/quiz/**").hasAnyRole("USER", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/quiz/**").hasAnyRole("USER", "ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

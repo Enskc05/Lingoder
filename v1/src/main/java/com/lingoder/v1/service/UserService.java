@@ -1,7 +1,9 @@
 package com.lingoder.v1.service;
 
+import com.lingoder.v1.dto.UserInfoResponseDto;
 import com.lingoder.v1.model.User;
 import com.lingoder.v1.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +29,18 @@ public class UserService {
     public User findByUserId(UUID userId){
         return userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+    }
+    public UserInfoResponseDto getCurrentUserInfo() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = findByEmail(email);
+
+        return new UserInfoResponseDto(
+                user.getUsername(),
+                user.getEmail()
+        );
+    }
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı: " + email));
     }
 }

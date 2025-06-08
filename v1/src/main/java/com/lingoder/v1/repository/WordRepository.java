@@ -20,7 +20,4 @@ public interface WordRepository extends JpaRepository<Word, UUID> {
     @Query(value = "SELECT * FROM words WHERE user_id = UUID_TO_BIN(:userId)", nativeQuery = true)
     List<Word> findByUserId(@Param("userId") String userId);
 
-    @Query("SELECT w FROM Word w LEFT JOIN FETCH w.topic WHERE w.user.username = :username")
-    List<Word> findByUsernameWithTopic(@Param("username") String username);
-
 }

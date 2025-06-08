@@ -35,6 +35,7 @@ public class UserService {
         User user = findByEmail(email);
 
         return new UserInfoResponseDto(
+                user.getId(),
                 user.getUsername(),
                 user.getEmail()
         );

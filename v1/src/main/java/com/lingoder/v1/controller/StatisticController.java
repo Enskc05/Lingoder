@@ -1,6 +1,5 @@
 package com.lingoder.v1.controller;
 
-import com.lingoder.v1.dto.GlobalStatDto;
 import com.lingoder.v1.dto.StatisticResponseDto;
 import com.lingoder.v1.service.StatisticService;
 import org.springframework.http.ResponseEntity;

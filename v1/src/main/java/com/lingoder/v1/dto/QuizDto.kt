@@ -1,6 +1,5 @@
 package com.lingoder.v1.dto
 
-import org.springframework.boot.context.properties.bind.Name
 import java.util.UUID
 
 data class QuizDto(

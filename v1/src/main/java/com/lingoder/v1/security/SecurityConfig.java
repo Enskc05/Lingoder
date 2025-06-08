@@ -40,6 +40,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/quiz/**").hasAnyRole("USER", "ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/quiz/**").hasAnyRole("USER", "ADMIN")
                                 .requestMatchers(HttpMethod.GET,"/person/info").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/person/update/**").hasAnyRole("USER","ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

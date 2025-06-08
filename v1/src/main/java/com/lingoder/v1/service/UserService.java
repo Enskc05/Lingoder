@@ -1,6 +1,7 @@
 package com.lingoder.v1.service;
 
 import com.lingoder.v1.dto.UserInfoResponseDto;
+import com.lingoder.v1.dto.UserUpdateRequestDto;
 import com.lingoder.v1.model.User;
 import com.lingoder.v1.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,7 +23,6 @@ public class UserService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı: " + username));
     }
-
     public void save(User user) {
         userRepository.save(user);
     }
@@ -30,6 +30,11 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
     }
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı: " + email));
+    }
+
     public UserInfoResponseDto getCurrentUserInfo() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = findByEmail(email);
@@ -40,8 +45,15 @@ public class UserService {
                 user.getEmail()
         );
     }
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı: " + email));
+
+    public void update(UUID id, UserUpdateRequestDto requestDto){
+        User existingUser = findByUserId(id);
+        existingUser.setUsername(requestDto.getUsername());
+        existingUser.setEmail(requestDto.getEmail());
+
+        userRepository.save(existingUser);
     }
+
+
+
 }

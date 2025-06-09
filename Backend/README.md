@@ -50,5 +50,9 @@ Bu sayede öğrenme sürecini:
 git clone https://github.com/Enskc05/Lingoder.git
 cd Lingoder/v1
 
-# 2. Docker servislerini başlat
+```bash
+# 2. Repoyu klonla
+git clone https://github.com/yusufcanyenilmez/Lingoder_Frontend.git
+
+# 3. Docker servislerini başlat
 docker-compose up -d --build

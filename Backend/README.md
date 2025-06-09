@@ -56,5 +56,7 @@ cd Lingoder/v1
 git clone https://github.com/yusufcanyenilmez/Lingoder_Frontend.git
 ```
 
+```bash
 # 3. Docker servislerini başlat
 docker-compose up -d --build
+```
